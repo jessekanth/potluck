@@ -1,0 +1,3 @@
+git add index.html kltf-logo.png data/potluck_status_backup.json
+git commit -m "Add potluck planner with status tracking"
+git push

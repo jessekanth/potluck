@@ -98,6 +98,52 @@
             font-weight: bold;
         }
         
+        .status-checkbox {
+            transform: scale(1.3);
+            margin: 0 5px;
+        }
+        
+        .status-label {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        
+        .received-row {
+            background-color: #e6ffed !important;
+        }
+        
+        .storage-buttons {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .storage-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        #saveBackup {
+            background-color: #24292e;
+            color: white;
+        }
+        
+        #loadBackup {
+            background-color: #f6f8fa;
+            border: 1px solid #d0d7de;
+        }
+        
+        #markAllReceived {
+            background-color: #2e8b57;
+            color: white;
+        }
+        
         .church-info {
             background-color: white;
             padding: 15px;
@@ -113,7 +159,6 @@
             border-radius: 8px;
             margin: 20px 0;
             font-size: 14px;
-            order: 3;
         }
         
         .container {
@@ -170,7 +215,7 @@
         
         <div>
             <h1>KL Telugu Fellowship Potluck Planner</h1>
-            <p>For 100 Guests | Event Date: August 10, 2025   6:00 PM to 10:00 PM</p>
+            <p>For 100 Guests | Event Date: August 10, 2025 | 6:00 PM to 10:00 PM</p>
         </div>
     </div>
     
@@ -195,8 +240,15 @@
                 <th>Qty</th>
                 <th>Unit</th>
                 <th>Category</th>
+                <th>Received</th>
             </tr>
         </table>
+
+        <div class="storage-buttons">
+            <button id="saveBackup" class="storage-btn">💾 Backup to GitHub</button>
+            <button id="loadBackup" class="storage-btn">🔄 Load Backup</button>
+            <button id="markAllReceived" class="storage-btn">✅ Mark All Received</button>
+        </div>
 
         <div class="contribution-note">
             <h3>Young Adults Contribution:</h3>
@@ -206,9 +258,10 @@
         <div class="instructions">
             <h3>How to Use:</h3>
             <ol>
-                <li>Check the <strong>Status</strong> column to see what's needed</li>
-                <li>Assign dishes to unassigned people to cover deficits</li>
-                <li>Contact the event coordinator with any questions</li>
+                <li>Check the <strong>Received</strong> box when items arrive</li>
+                <li>Use <strong>Backup to GitHub</strong> to save progress</li>
+                <li><strong>Load Backup</strong> to restore previous status</li>
+                <li>Contact coordinator with any questions</li>
             </ol>
         </div>
     </div>
@@ -274,46 +327,137 @@
             "Gulabjamu": { perPerson: 1, unit: "Count" }
         };
 
-        // Render assignments table
-        const assignmentsTable = document.getElementById("assignments");
-        assignments.forEach(item => {
-            const row = assignmentsTable.insertRow();
-            row.insertCell(0).textContent = item.name;
-            row.insertCell(1).textContent = item.dish;
-            row.insertCell(2).textContent = item.qty !== null ? item.qty : "";
-            row.insertCell(3).textContent = item.unit;
-            row.insertCell(4).textContent = item.dish ? getCategory(item.dish) : "Unassigned";
-        });
+        // ====== STORAGE FUNCTIONS ======
+        function saveToLocal() {
+            const statusData = {};
+            document.querySelectorAll("#assignments tr:not(:first-child)").forEach(row => {
+                const name = row.cells[0].textContent;
+                const isReceived = row.cells[5].querySelector("input").checked;
+                localStorage.setItem(`received-${name}`, isReceived);
+                statusData[name] = isReceived;
+            });
+            console.log("Saved to localStorage");
+            return statusData;
+        }
 
-        // Calculate and render summary
-        const summaryTable = document.getElementById("summary");
-        Object.keys(requirements).forEach(category => {
-            const totalQty = assignments
-                .filter(item => getCategory(item.dish) === category)
-                .reduce((sum, item) => sum + (item.qty || 0), 0);
-            
-            const required = (requirements[category].perPerson * 100).toFixed(1);
-            const difference = (totalQty - requirements[category].perPerson * 100).toFixed(1);
-            const status = difference >= 0 ? "✅ Enough" : `❌ Need ${Math.abs(difference)} ${requirements[category].unit} more`;
-            const action = difference >= 0 ? "" : `Assign ${Math.abs(difference)} ${requirements[category].unit}`;
+        function loadFromLocal() {
+            document.querySelectorAll("#assignments tr:not(:first-child)").forEach(row => {
+                const name = row.cells[0].textContent;
+                const isReceived = localStorage.getItem(`received-${name}`) === 'true';
+                row.cells[5].querySelector("input").checked = isReceived;
+                if (isReceived) row.classList.add("received-row");
+            });
+        }
 
-            const row = summaryTable.insertRow();
-            row.insertCell(0).textContent = category;
-            row.insertCell(1).textContent = `${totalQty} ${requirements[category].unit}`;
-            row.insertCell(2).textContent = `${required} ${requirements[category].unit}`;
+        function saveToGitHub() {
+            const statusData = saveToLocal();
+            const blob = new Blob([JSON.stringify(statusData, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
             
-            const statusCell = row.insertCell(3);
-            statusCell.textContent = status;
-            statusCell.className = difference >= 0 ? "enough" : "deficit";
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'potluck_status_backup.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
             
-            row.insertCell(4).textContent = difference >= 0 ? `+${difference}` : difference;
-            row.insertCell(5).textContent = action;
+            alert('Backup downloaded. Upload this file to your GitHub repo in /data/');
+        }
+
+        async function loadFromGitHub() {
+            try {
+                const response = await fetch('data/potluck_status_backup.json');
+                const backupData = await response.json();
+                
+                document.querySelectorAll("#assignments tr:not(:first-child)").forEach(row => {
+                    const name = row.cells[0].textContent;
+                    if (backupData[name] !== undefined) {
+                        row.cells[5].querySelector("input").checked = backupData[name];
+                        row.classList.toggle("received-row", backupData[name]);
+                        localStorage.setItem(`received-${name}`, backupData[name]);
+                    }
+                });
+                alert('Backup loaded successfully!');
+            } catch (error) {
+                alert('Error loading backup. Make sure the file exists in /data/ folder.');
+            }
+        }
+
+        function markAllReceived() {
+            document.querySelectorAll("#assignments tr:not(:first-child)").forEach(row => {
+                row.cells[5].querySelector("input").checked = true;
+                row.classList.add("received-row");
+            });
+            saveToLocal();
+        }
+
+        // ====== INITIAL SETUP ======
+        document.addEventListener("DOMContentLoaded", () => {
+            // Render assignments table
+            const assignmentsTable = document.getElementById("assignments");
+            assignments.forEach(item => {
+                const row = assignmentsTable.insertRow();
+                row.insertCell(0).textContent = item.name;
+                row.insertCell(1).textContent = item.dish;
+                row.insertCell(2).textContent = item.qty !== null ? item.qty : "";
+                row.insertCell(3).textContent = item.unit;
+                row.insertCell(4).textContent = item.dish ? getCategory(item.dish) : "Unassigned";
+                
+                // Received checkbox cell
+                const receivedCell = row.insertCell(5);
+                const label = document.createElement("label");
+                label.className = "status-label";
+                
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.className = "status-checkbox";
+                
+                label.appendChild(checkbox);
+                label.appendChild(document.createTextNode(" Received"));
+                receivedCell.appendChild(label);
+            });
+
+            // Load saved status
+            loadFromLocal();
+
+            // Render summary table
+            const summaryTable = document.getElementById("summary");
+            Object.keys(requirements).forEach(category => {
+                const totalQty = assignments
+                    .filter(item => getCategory(item.dish) === category)
+                    .reduce((sum, item) => sum + (item.qty || 0), 0);
+                
+                const required = (requirements[category].perPerson * 100).toFixed(1);
+                const difference = (totalQty - requirements[category].perPerson * 100).toFixed(1);
+                const status = difference >= 0 ? "✅ Enough" : `❌ Need ${Math.abs(difference)} ${requirements[category].unit} more`;
+                const action = difference >= 0 ? "" : `Assign ${Math.abs(difference)} ${requirements[category].unit}`;
+
+                const row = summaryTable.insertRow();
+                row.insertCell(0).textContent = category;
+                row.insertCell(1).textContent = `${totalQty} ${requirements[category].unit}`;
+                row.insertCell(2).textContent = `${required} ${requirements[category].unit}`;
+                
+                const statusCell = row.insertCell(3);
+                statusCell.textContent = status;
+                statusCell.className = difference >= 0 ? "enough" : "deficit";
+                
+                row.insertCell(4).textContent = difference >= 0 ? `+${difference}` : difference;
+                row.insertCell(5).textContent = action;
+            });
+
+            // Event listeners
+            document.getElementById("assignments").addEventListener("change", (e) => {
+                if (e.target.classList.contains("status-checkbox")) {
+                    const row = e.target.closest("tr");
+                    row.classList.toggle("received-row", e.target.checked);
+                    saveToLocal();
+                }
+            });
+            
+            document.getElementById("saveBackup").addEventListener("click", saveToGitHub);
+            document.getElementById("loadBackup").addEventListener("click", loadFromGitHub);
+            document.getElementById("markAllReceived").addEventListener("click", markAllReceived);
         });
     </script>
 </body>
-
 </html>
-
-
-
-
