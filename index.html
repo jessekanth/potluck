@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KL Telugu Fellowship Potluck Planner</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #f8f9fa;
+            --accent-color: #e63946;
+            --text-color: #333;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: var(--text-color);
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin-right: 20px;
+            border-radius: 50%;
+            object-fit: contain;
+            border: 2px solid var(--primary-color);
+            padding: 5px;
+            background: white;
+        }
+        
+        h1, h2, h3, h4 {
+            color: var(--primary-color);
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        h2 {
+            font-size: 20px;
+            margin-top: 25px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+        }
+        
+        h4 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            font-size: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background-color: white;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px 10px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: var(--secondary-color);
+        }
+        
+        .enough {
+            color: #2e8b57;
+            font-weight: bold;
+        }
+        
+        .deficit {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .church-info {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 14px;
+        }
+        
+        .instructions {
+            background-color: #e7f1ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 14px;
+            order: 3;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .contribution-note {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 14px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .pastoral-team {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ccc;
+        }
+        
+        .pastoral-team p {
+            margin: 5px 0;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+            
+            table {
+                font-size: 12px;
+            }
+            
+            th, td {
+                padding: 6px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="kltf-logo.png" 
+             alt="KL Telugu Fellowship Logo" 
+             class="logo">
+        
+        <div>
+            <h1>KL Telugu Fellowship Potluck Planner</h1>
+            <p>For 100 Guests | Event Date: August 10, 2025   6:00 PM to 10:00 PM</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>1. Potluck Readiness</h2>
+        <table id="summary">
+            <tr>
+                <th>Category</th>
+                <th>Total Qty</th>
+                <th>Required</th>
+                <th>Status</th>
+                <th>Difference</th>
+                <th>Action</th>
+            </tr>
+        </table>
+
+        <h2>2. Guest Assignments</h2>
+        <table id="assignments">
+            <tr>
+                <th>Name</th>
+                <th>Dish</th>
+                <th>Qty</th>
+                <th>Unit</th>
+                <th>Category</th>
+            </tr>
+        </table>
+
+        <div class="contribution-note">
+            <h3>Young Adults Contribution:</h3>
+            <p>Soft drinks, Paper plates, Glasses, Water, Tissues, Paper cups, Spoons & Sweets like laddu</p>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Use:</h3>
+            <ol>
+                <li>Check the <strong>Status</strong> column to see what's needed</li>
+                <li>Assign dishes to unassigned people to cover deficits</li>
+                <li>Contact the event coordinator with any questions</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="church-info">
+        <h3>KL Telugu Fellowship</h3>
+        <p>197, Jln Sultan Abdul Samad, Brickfields, 50470 Kuala Lumpur</p>
+        <p>Phone: +6016-985 6777 | Email: kltelugufellowship@gmail.com</p>
+        <p>Sunday Service: 4:00 PM & 6:00 PM</p>
+        
+        <div class="pastoral-team">
+            <h4>Pastoral Team:</h4>
+            <p><strong>Sr. Pas.</strong> Rev. James Ravinderan</p>
+            <p><strong>Asst. Pas.</strong> Jerry John</p>
+            <p><strong>TF Co-Cordinator</strong> Aunty Prema</p>
+        </div>
+    </div>
+
+    <script>
+        // Your data
+        const assignments = [
+            { name: "Sis Reshma", dish: "Plain Pulao", qty: 3, unit: "KG" },
+            { name: "Sis Anusha", dish: "Chicken Curry", qty: 2, unit: "KG" },
+            { name: "Sis Rama", dish: "Mutton Curry", qty: 2, unit: "KG" },
+            { name: "Sis Suneetha", dish: "Chicken Curry", qty: 2, unit: "KG" },
+            { name: "Sis Sarika", dish: "Bagara Rice", qty: 2, unit: "KG" },
+            { name: "Sis Lavanya", dish: "Bagara Rice", qty: 4, unit: "KG" },
+            { name: "Sis Rajani", dish: "Raita", qty: 5, unit: "Liters" },
+            { name: "Sis Asa", dish: "Mutton Curry", qty: 2, unit: "KG" },
+            { name: "Sis Divya", dish: "Chicken Curry", qty: 2, unit: "KG" },
+            { name: "Sis Santhoshi", dish: "Rice", qty: 4, unit: "KG" },
+            { name: "Sis Devi", dish: "Julabjamu", qty: 50, unit: "Count" },
+            { name: "Sis Jyothi R", dish: "Chicken Fry", qty: 2, unit: "KG" },
+            { name: "Sis Priya", dish: "Chicken Curry", qty: 2, unit: "KG" },
+            { name: "Sis Beulah", dish: "Vegetable Rice", qty: 3, unit: "KG" },
+            { name: "Sis Spandana", dish: "Chicken Curry", qty: 2, unit: "KG" },
+            { name: "Sis Madhu", dish: "Julabjamu", qty: 60, unit: "Count" },
+            { name: "Sis Vani", dish: "", qty: null, unit: "KG" },
+            { name: "Sis Sharon", dish: "", qty: null, unit: "KG" },
+            { name: "Sis Sulochana", dish: "Bagara Rice", qty: 3, unit: "KG" },
+            { name: "Sis Roopa", dish: "Chicken Fry", qty: 2, unit: "KG" }
+        ];
+
+        // Categorize dishes
+        function getCategory(dish) {
+            const riceDishes = ["Plain Pulao", "Bagara Rice", "Rice", "Vegetable Rice"];
+            const curryDishes = ["Chicken Curry", "Mutton Curry"];
+            
+            if (riceDishes.includes(dish)) return "Rice";
+            if (curryDishes.includes(dish)) return "Curry";
+            if (dish === "Raita") return "Raita";
+            if (dish === "Chicken Fry") return "Chicken Fry";
+            if (dish === "Julabjamu") return "Julabjamu";
+            return "Unassigned";
+        }
+
+        // Calculate requirements for 100 guests
+        const requirements = {
+            "Rice": { perPerson: 0.20, unit: "KG" },
+            "Curry": { perPerson: 0.15, unit: "KG" },
+            "Raita": { perPerson: 0.10, unit: "Liters" },
+            "Chicken Fry": { perPerson: 0.10, unit: "KG" },
+            "Julabjamu": { perPerson: 1, unit: "Count" }
+        };
+
+        // Render assignments table
+        const assignmentsTable = document.getElementById("assignments");
+        assignments.forEach(item => {
+            const row = assignmentsTable.insertRow();
+            row.insertCell(0).textContent = item.name;
+            row.insertCell(1).textContent = item.dish;
+            row.insertCell(2).textContent = item.qty !== null ? item.qty : "";
+            row.insertCell(3).textContent = item.unit;
+            row.insertCell(4).textContent = item.dish ? getCategory(item.dish) : "Unassigned";
+        });
+
+        // Calculate and render summary
+        const summaryTable = document.getElementById("summary");
+        Object.keys(requirements).forEach(category => {
+            const totalQty = assignments
+                .filter(item => getCategory(item.dish) === category)
+                .reduce((sum, item) => sum + (item.qty || 0), 0);
+            
+            const required = (requirements[category].perPerson * 100).toFixed(1);
+            const difference = (totalQty - requirements[category].perPerson * 100).toFixed(1);
+            const status = difference >= 0 ? "✅ Enough" : `❌ Need ${Math.abs(difference)} ${requirements[category].unit} more`;
+            const action = difference >= 0 ? "" : `Assign ${Math.abs(difference)} ${requirements[category].unit}`;
+
+            const row = summaryTable.insertRow();
+            row.insertCell(0).textContent = category;
+            row.insertCell(1).textContent = `${totalQty} ${requirements[category].unit}`;
+            row.insertCell(2).textContent = `${required} ${requirements[category].unit}`;
+            
+            const statusCell = row.insertCell(3);
+            statusCell.textContent = status;
+            statusCell.className = difference >= 0 ? "enough" : "deficit";
+            
+            row.insertCell(4).textContent = difference >= 0 ? `+${difference}` : difference;
+            row.insertCell(5).textContent = action;
+        });
+    </script>
+</body>
+</html>
