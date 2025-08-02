@@ -1,3 +1,22 @@
-git add index.html kltf-logo.png data/potluck_status_backup.json
-git commit -m "Add potluck planner with status tracking"
-git push
+{
+  "Sis Reshma": false,
+  "Sis Anusha": false,
+  "Sis Rama": false,
+  "Sis Suneetha": false,
+  "Sis Sarika": false,
+  "Sis Lavanya": false,
+  "Sis Rajani": false,
+  "Sis Asa": false,
+  "Sis Divya": false,
+  "Sis Santhoshi": false,
+  "Sis Devi": false,
+  "Sis Jyothi R": false,
+  "Sis Priya": false,
+  "Sis Beulah": false,
+  "Sis Spandana": false,
+  "Sis Madhu": false,
+  "Sis Vani": false,
+  "Sis Sharon": true,
+  "Sis Sulochana": false,
+  "Sis Roopa": false
+}
